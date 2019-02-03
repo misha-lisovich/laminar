@@ -33,8 +33,10 @@ RUN apt-get install -y libpython3-dev python3-pip
 ENV SLUGIFY_USES_TEXT_UNIDECODE=yes
 RUN pip3 install apache-airflow
 
-COPY config/.bash_profile /home/shiny/.bash_profile
+COPY inst/docker/laminar/config/.bash_profile /home/shiny/.bash_profile
+COPY . /home/shiny/laminar
 
-#RUN R -e "devtools::install('./../../../', dependencies = FALSE)" #install laminar package
+
+RUN R -e "devtools::install('/home/shiny/laminar', dependencies = FALSE)" #install laminar package
 
 
