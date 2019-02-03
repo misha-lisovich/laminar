@@ -1,0 +1,43 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+
+  laminar:
+    image: laminar
+    build: ./laminar
+    ports:
+      - "3838:3838"
+    volumes:
+      - ../:/srv/shiny-server/apps
+      - ../example_dags:/home/shiny/dags
+    environment:
+      - R_CONFIG_ACTIVE=docker
+
+  airflow_webserver:
+    image: puckel/docker-airflow
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      - LOAD_EX=n
+      - EXECUTOR=Local
+      - POSTGRES_HOST=postgres
+    volumes:
+        - ../example_dags:/usr/local/airflow/dags
+    ports:
+      - "8080:8080"
+    command: webserver
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+

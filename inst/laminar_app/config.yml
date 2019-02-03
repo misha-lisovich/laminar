@@ -1,0 +1,22 @@
+default:
+  database:
+    dbname:
+    host: 0.0.0.0
+    port: 5432
+    user: airflow
+    password: airflow
+  airflow_ui_url: http://0.0.0.0:8080
+  airflow_server_url: http://0.0.0.0:8080
+  dag_dir: /Users/misha.lisovich/Documents/bitbucket/laminar/inst/example_dags
+  python_dir: /Users/misha.lisovich/anaconda3/bin/python
+docker:
+  database:
+    dbname:
+    host: postgres
+    port: 5432
+    user: airflow
+    password: airflow
+  airflow_ui_url: http://0.0.0.0:8080
+  airflow_server_url: http://airflow_webserver:8080
+  dag_dir: /home/shiny/dags
+  python_dir: /usr/bin/python3

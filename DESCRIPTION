@@ -1,0 +1,31 @@
+Package: laminar
+Type: Package
+Title: An Improved Real-Time UI for Apache Airflow
+Version: 0.1.0
+Author: Misha Lisovich
+Maintainer: Misha Lisovich <mikhail.lisovich@gmail.com>
+Description: Laminar aims to make for a smoother Apache Airflow admin experience by providing a Shiny-based UI which 1) shows a real-time, globally-consistent state for all Airflow DAGs and tasks, 2) allows for simpler CRUD operations by taking care of the complex interrelationships between DAG Python files, DAG objects, Database metadata, Scheduler process memory and Webserver process memory to present a single logical DAG entity with straigtforward create/edit/delete mechanics.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+  assertthat,
+    stringr,
+    lubridate,
+    dplyr,
+    tidyr,
+    httr,
+    devtools,
+    dbplyr,
+    RPostgres,
+    DT,
+    reticulate,
+    htmlwidgets,
+    httr,
+    r2d3,
+    shinyAce,
+    future,
+    shinyjs,
+    xml2,
+    config
+RoxygenNote: 6.1.1
