@@ -1,4 +1,4 @@
-# laminar
+# laminar <a href='https://github.com/misha-lisovich/laminar'><img src="inst/figures/laminar.png" align="right" height="139" width="139"></a>
 
 **NOTE: this package is under active development, and should be considered pre-alpha.**
 
