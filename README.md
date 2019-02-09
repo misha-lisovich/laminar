@@ -37,7 +37,7 @@ This will bring up linked containers containing:
 
 * **Apache Airflow** from [puckel/docker-airflow](https://hub.docker.com/r/puckel/docker-airflow/)
 * **Postgres** database [dockerhub/postgres](https://hub.docker.com/_/postgres)
-* **Laminar** image derived from [rocker/shiny](https://hub.docker.com/r/rocker/shiny/)
+* **Laminar** from [mul118/laminar](https://hub.docker.com/r/mul118/laminar/)
 
 To test drive the app, bring up:
 
