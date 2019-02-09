@@ -25,6 +25,6 @@ Function to create a d3-based horizontal circle plot
 }
 \examples{
 {
- states <- data_frame(state = airflow_task_state_colors()$state, count = 1:8, url = 'www.https://d3js.org/')
+ states <- data.frame(state = airflow_task_state_colors()$state, count = 1:8, url = 'www.https://d3js.org/')
  circleplot('af_plot', states, airflow_task_state_colors())}
 }

@@ -20,9 +20,10 @@ reactivePoll2 <- function (intervalMillis, session, checkFunc)
   return(re)
 }
 
+
 #' Glyph Icon
 #'
-#' Specialization of shiny::icon using glyphicon library
+#' Specialization of shiny::icon using glyphicon library.
 #' @inheritParams shiny::icon
 #' @export
 glicon <- function(name, class = NULL) shiny::icon(name, class, "glyphicon")

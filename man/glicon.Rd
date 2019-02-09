@@ -20,5 +20,5 @@ in icon names (i.e. the "fa-calendar" icon should be referred to as
 supported styles).}
 }
 \description{
-Specialization of shiny::icon using glyphicon library
+Specialization of shiny::icon using glyphicon library.
 }

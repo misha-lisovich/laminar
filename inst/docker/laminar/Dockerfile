@@ -37,6 +37,6 @@ COPY inst/docker/laminar/config/.bash_profile /home/shiny/.bash_profile
 COPY . /home/shiny/laminar
 
 
-RUN R -e "devtools::install('/home/shiny/laminar', dependencies = FALSE)" #install laminar package
+RUN R -e "devtools::install('/home/shiny/laminar', dependencies = FALSE)" # install laminar package
 
 
