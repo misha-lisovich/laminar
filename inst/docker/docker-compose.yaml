@@ -12,7 +12,6 @@ services:
 
   laminar:
     image: mul118/laminar
-    build: ./laminar
     ports:
       - "3838:3838"
     volumes:
