@@ -1,6 +1,8 @@
 # laminar <a href='https://github.com/misha-lisovich/laminar'><img src="inst/figures/laminar.png" align="right" height="139" width="139"></a>
 
 [![Travis build status](https://travis-ci.org/misha-lisovich/laminar.svg?branch=master)](https://travis-ci.org/misha-lisovich/laminar)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 **NOTE: this package is under active development, and should be considered pre-alpha.**
 
