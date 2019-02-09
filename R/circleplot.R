@@ -6,7 +6,7 @@
 #' @param colors data frame of the form (state, color). All states will be displayed. Row order determines display order.
 #' @inheritParams r2d3::r2d3
 #' @examples {
-#'  states <- data_frame(state = airflow_task_state_colors()$state, count = 1:8, url = 'www.https://d3js.org/')
+#'  states <- data.frame(state = airflow_task_state_colors()$state, count = 1:8, url = 'www.https://d3js.org/')
 #'  circleplot('af_plot', states, airflow_task_state_colors())}
 #' @return r2d3 htmlwidget
 #' @export
