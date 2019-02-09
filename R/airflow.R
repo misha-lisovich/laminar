@@ -21,6 +21,8 @@ py_to_r.pendulum.date.Date <- function(x) {lubridate::as_datetime(as.character(x
 py_to_r.datetime.timedelta <- function(x) {as.character(x)}
 
 # recursively (re)convert list of reticulate into R equivalents
+# Example: py_run_string("from datetime import timedelta; x = {'a' : 1, 'b' : timedelta(minutes=5)}")
+#          py_to_r_reconvert(py$x)
 py_to_r_reconvert <- function(x){
   rapply(x, function(object) {
     if (inherits(object, "python.builtin.object"))

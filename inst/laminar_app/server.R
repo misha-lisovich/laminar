@@ -11,8 +11,6 @@ schedule_link <- function(dag_id, schedule)
 task_url <- function(dag_id, state)
   paste0(airflow_ui_url,"/admin/taskinstance/?flt1_dag_id_equals=", dag_id, "&flt2_state_equals=", state)
 
-#glicon <- function(name, class = NULL) shiny::icon(name, class, "glyphicon")
-
 airflow_container_exec <- function(cmd) system(paste0(
   'docker exec laminar_airflow_webserver_1 sh -c "',
   cmd, '"'))
