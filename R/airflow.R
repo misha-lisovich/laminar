@@ -5,13 +5,29 @@
 #' @return csrf token string
 #' @export
 get_csrf_token <- function(airflow_url){
-  input_form <-
-    airflow_url %>%
+  airflow_url %>%
     paste0("/admin/queryview") %>%
     httr::GET() %>%
     httr::content() %>%
     xml2::xml_find_first('.//input[@name="_csrf_token"]') %>%
     xml2::xml_attr('value')
+}
+
+
+# date conversion
+py_to_r.pendulum.date.Date <- function(x) {lubridate::as_datetime(as.character(x))}
+
+# timedelta conversion
+py_to_r.datetime.timedelta <- function(x) {as.character(x)}
+
+# recursively (re)convert list of reticulate into R equivalents
+py_to_r_reconvert <- function(x){
+  rapply(x, function(object) {
+    if (inherits(object, "python.builtin.object"))
+      reticulate::py_to_r(object)
+    else
+      object
+  }, how = 'replace')
 }
 
 
@@ -22,19 +38,19 @@ get_csrf_token <- function(airflow_url){
 #' @param args attributes to extract. NOTE: currently only extracts start_date and schedule_interval - needs generalization.
 #' @return data frame of the form (dag_id, dag_args)
 #' @export
-get_airflow_dag_args <- function(dag_dir = "/Users/misha.lisovich/Documents/bitbucket/warp-pipelines/warp_pipelines/dags",
+get_af_dag_args <- function(dag_dir = config::get()$dag_dir,
                             args = c('start_date', 'schedule_interval')){
 
-  pydag           <- import_from_path('dag')
+  dag_filepath    <- system.file(package = 'laminar')
+  pydag           <- reticulate::import_from_path('dag', path = dag_filepath)
   af_dags         <- pydag$list_dir_dags(dag_dir)
-  af_dag_args_lst <- pydag$get_dag_args(af_dags, args)
+  af_dag_args_lst <- py_to_r_reconvert(pydag$get_dag_args(af_dags, args))
   af_dag_args     <-
     af_dag_args_lst %>%
-    data_frame(dag_id = names(.),
-               schedule_interval = purrr::map_chr(., 'schedule_interval', .null =NA_character_),
-               start_date = purrr::map_df(., ~py_to_r(.x[['start_date']])) %>% tidyr::gather(dag_id, start_date) %>% .$start_date
-    ) %>%
-    select(-`.`)
+    {data_frame(dag_id = names(.),
+                schedule_interval = purrr::map_chr(., 'schedule_interval', .null = NA_character_),
+                start_date = purrr::map_df(., 'start_date') %>% tidyr::gather(dag_id, start_date) %>% .$start_date
+    )}
 
   af_dag_args
 }

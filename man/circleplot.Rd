@@ -12,6 +12,10 @@ circleplot(id, states, colors, width = NULL, height = NULL)
 \item{states}{data frame of the form (state, count, url).}
 
 \item{colors}{data frame of the form (state, color). All states will be displayed. Row order determines display order.}
+
+\item{width}{Desired width for output widget.}
+
+\item{height}{Desired height for output widget.}
 }
 \value{
 r2d3 htmlwidget
@@ -20,5 +24,7 @@ r2d3 htmlwidget
 Function to create a d3-based horizontal circle plot
 }
 \examples{
- \dontrun{circleplot('af_plot', 1:8, airflow_task_state_colors())}
+{
+ states <- data_frame(state = airflow_task_state_colors()$state, count = 1:8, url = 'www.https://d3js.org/')
+ circleplot('af_plot', states, airflow_task_state_colors())}
 }

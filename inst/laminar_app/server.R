@@ -1,6 +1,54 @@
-# Define server logic
-function(input, output, session) {
-  
+# Template functions
+#-------------------
+
+# Link templates
+dag_link <- function(dag_id)
+  paste0("<a href=",airflow_ui_url,"/admin/airflow/tree?dag_id=",dag_id,">",dag_id, "</a>")
+
+schedule_link <- function(dag_id, schedule)
+  paste0('<a class = "label label-default"  href=', airflow_ui_url, '/admin/dagrun/?flt2_dag_id_equals=',dag_id,'>',schedule,'</a>')
+
+task_url <- function(dag_id, state)
+  paste0(airflow_ui_url,"/admin/taskinstance/?flt1_dag_id_equals=", dag_id, "&flt2_state_equals=", state)
+
+#glicon <- function(name, class = NULL) shiny::icon(name, class, "glyphicon")
+
+airflow_container_exec <- function(cmd) system(paste0(
+  'docker exec laminar_airflow_webserver_1 sh -c "',
+  cmd, '"'))
+
+# DAG remove modal
+dagRemoveModal <- function(dag_id) {
+  modalDialog(
+    title = "Remove Dag",
+    span("Are you sure you want to delete ", tags$b(dag_id)," now?\n\
+          This option will delete the DAG file, as well as all metadata, DAG runs, etc.\n\
+          This cannot be undone."),
+    footer = tagList(
+      modalButton("Cancel"),
+      actionButton("remove_dag_ok", "OK")
+    )
+  )
+}
+
+# Clear history modal
+clearHistoryModal <- function(dag_id) {
+  modalDialog(
+    title = "Clear Dag History",
+    span("Are you sure you want to clear history for ", tags$b(dag_id)," now?\n\
+          This option will delete all metadata, DAG runs, etc.\n\
+          This cannot be undone."),
+    footer = tagList(
+      modalButton("Cancel"),
+      actionButton("clear_dag_history_ok", "OK")
+    )
+  )
+}
+
+# Server Logic
+#-------------
+server <- function(input, output, session) {
+
 
   dag_args <- reactivePoll(
     1000,
@@ -46,7 +94,7 @@ function(input, output, session) {
     edit_dag_filename <- input$dag_to_edit
     updateTextInput(session, "dag_filename", "Dag File Name", edit_dag_filename)
     dag_text <- ifelse(edit_dag_filename == "", "", readr::read_file(paste0(dag_dir, "/", edit_dag_filename)))
-    updateAceEditor(session, "dag_editor", dag_text, mode = "python", wordWrap = TRUE)
+    shinyAce::updateAceEditor(session, "dag_editor", dag_text, mode = "python", wordWrap = TRUE)
   })
 
   observeEvent(input$cancel_dag_edits,{
@@ -67,7 +115,6 @@ function(input, output, session) {
 
 
   task_plots <- reactive({
-    message('task_instance')
     task_instance() %>%
       group_by(dag_id, state) %>%
       summarise(count = n()) %>%
@@ -75,7 +122,7 @@ function(input, output, session) {
       group_by(dag_id) %>%
       summarise(
         tasks =
-          circleplot(paste0("task_", dag_id[1]), data_frame(state, count, url = task_url(dag_id, state)), task_state_colors, "240px", "37") %>%
+          laminar::circleplot(paste0("task_", dag_id[1]), data_frame(state, count, url = task_url(dag_id, state)), task_state_colors, "240px", "37") %>%
           htmltools::as.tags() %>%
           as.character %>%
           HTML
@@ -85,8 +132,6 @@ function(input, output, session) {
 
 
   dag_disp <- reactive({
-    message(Sys.time())
-    
     dag() %>%
       full_join(dag_args(), "dag_id") %>%
       left_join(dag_runs(), "dag_id") %>%
@@ -204,9 +249,9 @@ function(input, output, session) {
       options = list(
         fnDrawCallback = htmlwidgets::JS('function(){ HTMLWidgets.staticRender();}'))
     ) %>%
-      formatStyle('status', color = styleEqual(c('Paused', 'Active'), c('gray', 'green'))) %>%
-      formatStyle('state', color = styleEqual(c('Running', 'Success', 'Failed'), c('green', 'green', 'red'))) %>%
-      formatDate(c('last_run', 'start_date'), method = "toLocaleString")
+      DT::formatStyle('status', color = DT::styleEqual(c('Paused', 'Active'), c('gray', 'green'))) %>%
+      DT::formatStyle('state', color = DT::styleEqual(c('Running', 'Success', 'Failed'), c('green', 'green', 'red'))) %>%
+      DT::formatDate(c('last_run', 'start_date'), method = "toLocaleString")
   })
 
   dag_proxy <- DT::dataTableProxy('dag')
@@ -216,8 +261,8 @@ function(input, output, session) {
   })
 
   # Dummy render to initialize r2d3 deps. Needs rework
-  output$d3deps <- renderD3({
-    r2d3(data = c (0.3, 0.6, 0.8, 0.95, 0.40, 0.20),
+  output$d3deps <- r2d3::renderD3({
+    r2d3::r2d3(data = c (0.3, 0.6, 0.8, 0.95, 0.40, 0.20),
          script = system.file("examples/barchart.js", package = "r2d3")
     )
   })

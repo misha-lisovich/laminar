@@ -2,8 +2,9 @@
 
 export(airflow_task_state_colors)
 export(circleplot)
-export(get_airflow_dag_args)
+export(get_af_dag_args)
 export(get_csrf_token)
 export(glicon)
+export(launch_app)
 export(reactivePoll2)
 import(dplyr)
