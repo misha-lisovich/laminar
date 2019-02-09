@@ -20,23 +20,17 @@ require('devtools')
 devtools::install_github("misha-lisovich/laminar")
 ```
 
-Laminar requires a running Airflow instance backed by a Postgres database (to be generalized). The best way to experience it is by building & running the installed Docker/Docker-Compose files.
+Laminar requires a running Airflow instance backed by a DBI-compliant database. The best way to experience it is by using the included Docker/Docker-Compose files.
 
 
 ## Docker Image
 
 Clone the laminar directory to your computer. 
 
-To build the laminar docker image, navigate to the root laminar directory and type:
+To run the laminar docker setup, navigate to the root laminar directory and type:
 
 ``` bash
-docker build -t laminar -f inst/docker/laminar/Dockerfile .
-```
-
-Then execute:
-
-``` bash
-docker-compose up -f inst/docker/docker-compose.yaml up -d
+docker-compose -f inst/docker/docker-compose.yaml up -d
 ```
 
 This will bring up linked containers containing:
@@ -45,14 +39,22 @@ This will bring up linked containers containing:
 * **Postgres** database [dockerhub/postgres](https://hub.docker.com/_/postgres)
 * **Laminar** image derived from [rocker/shiny](https://hub.docker.com/r/rocker/shiny/)
 
+To test drive the app, bring up:
+
+1. **Airflow UI** at http://0.0.0.0:8080/admin
+2. **Laminar UI** at http://0.0.0.0:3838/apps/laminar_app
+
+Try switching on and running example_bash_operator in the Airflow UI, and observing real-time job progress through the Laminar UI. Try running the same job through the Laminar UI by selecting it, and pressing 'Trigger' or 'Pause/Unpause' from the contextual menu. Reload the Airflow UI to verify the changes.
+
+## Build
+
+To build the laminar docker image, navigate to the root laminar directory and type:
+
+``` bash
+docker build -t mul118/laminar -f inst/docker/laminar/Dockerfile .
+```
 
 ## Custom Settings
 
 Laminar uses Rstudio's [config](https://github.com/rstudio/config) package to store & accesss per-environment settings. To customize settings modify the config.yaml file located in inst/laminar_app, then reinstall/rebuild as needed.
-
-
-## TODO
-1. Implement HTTP functionality for Delete DAG and Clear History buttons
-2. Support full complement of Airflow example dags by e.g., properly dealing with subdags
-
 
