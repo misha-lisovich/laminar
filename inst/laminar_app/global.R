@@ -15,7 +15,7 @@ use_python(conf$python_dir, required = T)
 library('laminar')
 
 # Globals
-brb                 <- with(conf$database, DBI::dbConnect(RPostgres::Postgres(), dbname, host, port, user, password))
+brb                 <- with(conf$database, DBI::dbConnect(drv, dbname, host, port, user, password))
 dag_db              <- tbl(brb, sql('select dag_id, is_paused, fileloc, owners from dag order by dag_id'))
 dag_runs_db         <- tbl(brb, sql("select dag_id, state, execution_date from (select *, max(id) over (partition by dag_id) as max_id from dag_run) as x where id = max_id order by dag_id"))
 task_instance_db    <- tbl(brb, sql("select recency_rank, task_id, dag_id, execution_date, state, try_number, max_tries from(select *, rank() over (partition by dag_id, task_id order by execution_date desc) as recency_rank from task_instance) as x where recency_rank = 1 order by dag_id"))

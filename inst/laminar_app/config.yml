@@ -1,5 +1,6 @@
 default:
   database:
+    drv: !expr RPostgres::Postgres()
     dbname:
     host: 0.0.0.0
     port: 5432
@@ -11,6 +12,7 @@ default:
   python_dir: /Users/misha.lisovich/anaconda3/bin/python
 docker:
   database:
+    drv: !expr RPostgres::Postgres()
     dbname:
     host: postgres
     port: 5432
