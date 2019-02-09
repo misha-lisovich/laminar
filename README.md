@@ -1,5 +1,7 @@
 # laminar <a href='https://github.com/misha-lisovich/laminar'><img src="inst/figures/laminar.png" align="right" height="139" width="139"></a>
 
+[![Travis build status](https://travis-ci.org/misha-lisovich/laminar.svg?branch=master)](https://travis-ci.org/misha-lisovich/laminar)
+
 **NOTE: this package is under active development, and should be considered pre-alpha.**
 
 Laminar aims to make for a smoother Apache Airflow admin experience by providing a Shiny-based UI which: 
