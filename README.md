@@ -1,15 +1,14 @@
 # laminar <a href='https://github.com/misha-lisovich/laminar'><img src="inst/figures/laminar.png" align="right" height="139" width="139"></a>
 
+[![Lifecycle:experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Travis build status](https://travis-ci.org/misha-lisovich/laminar.svg?branch=master)](https://travis-ci.org/misha-lisovich/laminar)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-**NOTE: this package is under active development, and should be considered pre-alpha.**
+Laminar is a companion app to [Apache Airflow](https://airflow.apache.org/), which aims to make for a smoother Airflow admin experience by: 
 
-Laminar aims to make for a smoother Apache Airflow admin experience by providing a Shiny-based UI which: 
-
-1. Provides a real-time, globally-consistent state for all Airflow DAGs and tasks
-2. Allows for simpler CRUD operations by taking care of the complex interrelationships between DAG Python files, DAG objects, Database metadata, Scheduler process memory and Webserver process memory to present a single logical DAG entity with straigtforward create/edit/delete mechanics.
+1. Providing a real-time, globally-consistent state for all Airflow DAGs and tasks.
+2. Enabling simpler CRUD operations by taking care of the complex interrelationships between DAG Python files, DAG objects, Database metadata, Scheduler process memory and Webserver process memory to present a single logical DAG entity with straigtforward create/edit/delete mechanics.
 
 ## Installation
 
