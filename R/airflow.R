@@ -43,8 +43,8 @@ py_to_r_reconvert <- function(x){
 get_af_dag_args <- function(dag_dir = config::get()$dag_dir,
                             args = c('start_date', 'schedule_interval')){
 
-  dag_filepath    <- system.file(package = 'laminar')
-  pydag           <- reticulate::import_from_path('dag', path = dag_filepath)
+  pydag_filepath  <- system.file(package = 'laminar')
+  pydag           <- reticulate::import_from_path('dag', path = pydag_filepath)
   af_dags         <- pydag$list_dir_dags(dag_dir)
   af_dag_args_lst <- py_to_r_reconvert(pydag$get_dag_args(af_dags, args))
   af_dag_args     <-
