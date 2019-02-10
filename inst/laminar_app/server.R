@@ -155,10 +155,6 @@ server <- function(input, output, session) {
       ) %>%
       GET
 
-    # # Invoke trigger command
-    # toggle_dag_cmd <- paste0('airflow trigger_dag ', dag_id)
-    # future(airflow_container_exec(toggle_dag_cmd))
-
     showNotification(span("Triggered ", tags$b(dag_id), ". It should start momentarily."), type = "message")
 
   })
@@ -188,12 +184,6 @@ server <- function(input, output, session) {
       ) %>%
       POST(body = list(csrf_token = csrf_token))
 
-
-    # # Invoke toggle command via api
-    # new_status <- ifelse(dag_status, "unpause", "pause")
-    # toggle_dag_cmd <- paste0('airflow ', new_status, ' ', dag_id)
-    # future(airflow_container_exec(toggle_dag_cmd))
-
     showNotification(span(str_to_title(new_status)," command submitted for ", tags$b(dag_id), ". Please wait for Airflow to update."), type = "message")
   })
 
@@ -204,15 +194,25 @@ server <- function(input, output, session) {
   })
 
   # Remove dag
+  # TODO : handle file vs mod
   observeEvent(input$remove_dag_ok, {
     dag_id <- dag()$dag_id[input$dag_rows_selected]
     message(paste0('Trigger removal of ', dag_id))
     removeModal()
 
-    # Invoke remove
-    delete_dag_cmd <- paste0('rm dags/', dag_id, '.py && airflow delete_dag ', dag_id)
-    message(delete_dag_cmd)
-    #future(airflow_container_exec(delete_dag_cmd))
+    # Remove dag file
+    delete_dag_path <- paste0(dag_dir, '/', dag_id, '.py')
+    fs::file_delete(delete_dag_path)
+
+    # Remove metadata
+    airflow_server_url %>%
+      modify_url(
+        path = "admin/airflow/delete",
+        query = list(dag_id = dag_id)
+      ) %>%
+      GET
+      #POST(body = list(csrf_token = csrf_token))
+
     showNotification(span("Deleting dag file & metadata for ", tags$b(dag_id),"."), type = "message")
 
   })
