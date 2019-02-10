@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-Laminar is a companion app to [Apache Airflow](https://airflow.apache.org/), which aims to make for a smoother Airflow admin experience by: 
+Laminar is a companion app to [Apache Airflow](https://airflow.apache.org/) which aims to make for a smoother Airflow admin experience by: 
 
 1. Providing a real-time, globally-consistent state for all Airflow DAGs and tasks.
 2. Enabling simpler CRUD operations by taking care of the complex interrelationships between DAG Python files, DAG objects, Database metadata, Scheduler process memory and Webserver process memory to present a single logical DAG entity with straigtforward create/edit/delete mechanics.
