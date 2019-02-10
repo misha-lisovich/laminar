@@ -194,7 +194,6 @@ server <- function(input, output, session) {
   })
 
   # Remove dag
-  # TODO : handle file vs mod
   observeEvent(input$remove_dag_ok, {
     dag_id <- dag()$dag_id[input$dag_rows_selected]
     message(paste0('Trigger removal of ', dag_id))
@@ -211,7 +210,6 @@ server <- function(input, output, session) {
         query = list(dag_id = dag_id)
       ) %>%
       GET
-      #POST(body = list(csrf_token = csrf_token))
 
     showNotification(span("Deleting dag file & metadata for ", tags$b(dag_id),"."), type = "message")
 
@@ -229,10 +227,24 @@ server <- function(input, output, session) {
     message(paste0('Trigger clear history for ', dag_id))
     removeModal()
 
-    # Invoke clear history
-    toggle_dag_cmd <- paste0('airflow clear -c ', dag_id)
-    #future(airflow_container_exec(toggle_dag_cmd))
+    # Remove dag file
+    dag_filepath <- paste0(dag_dir, '/', dag_id, '.py')
+    dag_text <- readr::read_file(dag_filepath)
+    fs::file_delete(dag_filepath)
+    
+    # Remove metadata
+    airflow_server_url %>%
+      modify_url(
+        path = "admin/airflow/delete",
+        query = list(dag_id = dag_id)
+      ) %>%
+      GET
+    
+    # Re-write dag file
+    readr::write_file(dag_text, dag_filepath)
+    
     showNotification(span("Clearing history for ", tags$b(dag_id), ". Please wait for Airflow to update."), type = "message")
+    
   })
 
 
